@@ -1,0 +1,191 @@
+
+[{
+  "schema" : { "dataSource":"datasource-topic-pixel",
+               "aggregators":[ {"type":"count", "name":"impressions"}],
+               "indexGranularity":"minute",
+	       "shardSpec" : { "type": "none" } },
+  "config" : { "maxRowsInMemory" : 500000,
+               "intermediatePersistPeriod" : "PT10m" },
+ "firehose" : {
+        "type" : "kafka-0.8",
+        "consumerProps" : {
+            "zookeeper.connect": "<%=@zookeeper%>", 
+            "zookeeper.connection.timeout.ms": "15000",
+            "zookeeper.session.timeout.ms": "15000",
+            "zookeeper.sync.time.ms": "5000",
+            "group.id": "topic-pixel-<%=@environment%>",
+            "fetch.message.max.bytes": "1048586",
+            "auto.offset.reset": "largest",
+            "auto.commit.enable": "false"
+        },
+        "feed" : "topic-pixel-<%=@environment%>",
+        "parser" : {
+            "timestampSpec" : {
+                "column" : "utcdt",
+                "format" : "iso"
+            },
+            "data" : {
+                "format" : "json"
+            },
+            "dimensionExclusions" : [
+                "wp"
+            ]
+        }
+    },
+    "plumber" : {
+        "type" : "realtime",
+        "windowPeriod" : "PT10m",
+        "segmentGranularity":"hour",
+        "basePersistDirectory" : "/tmp/realtime/basePersist",
+        "rejectionPolicyFactory": {
+            "type": "messageTime"
+        }
+    }
+  },
+{
+  "schema" : { "dataSource":"datasource-topic-impression",
+               "aggregators":[ {"type":"count", "name":"impressions"}],
+               "indexGranularity":"minute",
+	       "shardSpec" : { "type": "none" } },
+  "config" : { "maxRowsInMemory" : 500000,
+               "intermediatePersistPeriod" : "PT10m" },
+ "firehose" : {
+        "type" : "kafka-0.8",
+        "consumerProps" : {
+            "zookeeper.connect": "<%=@zookeeper%>", 
+            "zookeeper.connection.timeout.ms": "15000",
+            "zookeeper.session.timeout.ms": "15000",
+            "zookeeper.sync.time.ms": "5000",
+            "group.id": "topic-impression-<%=@environment%>",
+            "fetch.message.max.bytes": "1048586",
+            "auto.offset.reset": "largest",
+            "auto.commit.enable": "false"
+        },
+        "feed" : "topic-impression-<%=@environment%>",
+        "parser" : {
+            "timestampSpec" : {
+                "column" : "utcdt",
+                "format" : "iso"
+            },
+            "data" : {
+                "format" : "json"
+            },
+            "dimensionExclusions" : [
+                "wp"
+            ]
+        }
+    },
+    "plumber" : {
+        "type" : "realtime",
+        "windowPeriod" : "PT10m",
+        "segmentGranularity":"hour",
+        "basePersistDirectory" : "/tmp/realtime/basePersist",
+        "rejectionPolicyFactory": {
+            "type": "messageTime"
+        }
+    }
+  },
+{
+  "schema" : { "dataSource":"datasource-topic-click",
+               "aggregators":[ {"type":"count", "name":"click"}],
+               "indexGranularity":"minute",
+	       "shardSpec" : { "type": "none" } },
+  "config" : { "maxRowsInMemory" : 500000,
+               "intermediatePersistPeriod" : "PT10m" },
+ "firehose" : {
+        "type" : "kafka-0.8",
+        "consumerProps" : {
+            "zookeeper.connect": "<%=@zookeeper%>", 
+            "zookeeper.connection.timeout.ms": "15000",
+            "zookeeper.session.timeout.ms": "15000",
+            "zookeeper.sync.time.ms": "5000",
+            "group.id": "topic-click-<%=@environment%>",
+            "fetch.message.max.bytes": "1048586",
+            "auto.offset.reset": "largest",
+            "auto.commit.enable": "false"
+        },
+        "feed" : "topic-click-<%=@environment%>",
+        "parser" : {
+            "timestampSpec" : {
+                "column" : "utcdt",
+                "format" : "iso"
+            },
+            "data" : {
+                "format" : "json"
+            },
+            "dimensionExclusions" : [
+                "wp"
+            ]
+        }
+    },
+    "plumber" : {
+        "type" : "realtime",
+        "windowPeriod" : "PT10m",
+        "segmentGranularity":"hour",
+        "basePersistDirectory" : "/tmp/realtime/basePersist",
+        "rejectionPolicyFactory": {
+            "type": "messageTime"
+        }
+    }
+  },
+  {
+  "schema" : { "dataSource":"datasource-topic-test",
+               "aggregators":[ {"type":"count", "name":"click"}],
+               "indexGranularity":"minute",
+	       "shardSpec" : { "type": "none" } },
+  "config" : { "maxRowsInMemory" : 500000,
+               "intermediatePersistPeriod" : "PT10m" },
+ "firehose" : {
+        "type" : "kafka-0.8",
+        "consumerProps" : {
+            "zookeeper.connect": "<%=@zookeeper%>", 
+            "zookeeper.connection.timeout.ms": "15000",
+            "zookeeper.session.timeout.ms": "15000",
+            "zookeeper.sync.time.ms": "5000",
+            "group.id": "topic-click-<%=@environment%>",
+            "fetch.message.max.bytes": "1048586",
+            "auto.offset.reset": "largest",
+            "auto.commit.enable": "false"
+        },
+        "feed" : "topic-test-<%=@environment%>",
+        "parser" : {
+            "timestampSpec" : {
+                "column" : "utcdt",
+                "format" : "iso"
+            },
+            "data" : {
+                "format" : "json"
+            },
+            "dimensionExclusions" : [
+                "wp"
+            ]
+        }
+    },
+    "plumber" : {
+        "type" : "realtime",
+        "windowPeriod" : "PT10m",
+        "segmentGranularity":"hour",
+        "basePersistDirectory" : "/tmp/realtime/basePersist",
+        "rejectionPolicyFactory": {
+            "type": "messageTime"
+        }
+    }
+   }
+]    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

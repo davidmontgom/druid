@@ -1,0 +1,26 @@
+[program:historical]
+command = /usr/bin/java -Xmx256m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -classpath /var/druid/lib/*:/var/druid/config/historical io.druid.cli.Main server historical
+
+process_name=%(program_name)s
+autostart=true
+autorestart=true
+stopsignal=KILL
+stopasgroup = true
+killasgroup = true
+
+
+stdout_logfile=/tmp/historical.log
+stdout_logfile_maxbytes=100MB
+stdout_logfile_backups=10
+
+stderr_logfile = /tmp/historical.err
+stderr_logfile_maxbytes=10MB
+stderr_logfile_backups=10
+
+
+[group:historical_server]
+programs=historical
+
+
+
+

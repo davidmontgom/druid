@@ -1,0 +1,25 @@
+[program:realtime]
+command = /usr/bin/java -Xmx256m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Ddruid.realtime.specFile=/var/realtime.spec -classpath /var/druid/lib/*:/var/druid/config/realtime io.druid.cli.Main server realtime
+process_name=%(program_name)s
+autostart=true
+autorestart=true
+stopsignal=KILL
+stopasgroup = true
+killasgroup = true
+
+
+stdout_logfile=/tmp/realtime.log
+stdout_logfile_maxbytes=100MB
+stdout_logfile_backups=10
+
+stderr_logfile = /tmp/realtime.err
+stderr_logfile_maxbytes=10MB
+stderr_logfile_backups=10
+
+
+[group:realtime_server]
+programs=realtime
+
+
+
+

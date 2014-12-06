@@ -1,0 +1,25 @@
+[program:broker]
+command = /usr/bin/java -Xmx256m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -classpath /var/druid/lib/*:/var/druid/config/broker io.druid.cli.Main server broker
+process_name=%(program_name)s
+autostart=true
+autorestart=true
+stopsignal=KILL
+stopasgroup = true
+killasgroup = true
+
+
+stdout_logfile=/tmp/broker.log
+stdout_logfile_maxbytes=100MB
+stdout_logfile_backups=10
+
+stderr_logfile = /tmp/broker.err
+stderr_logfile_maxbytes=10MB
+stderr_logfile_backups=10
+
+
+[group:broker_server]
+programs=broker
+
+
+
+
