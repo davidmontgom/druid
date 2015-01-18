@@ -1,5 +1,3 @@
-
-
 data_bag("my_data_bag")
 db = data_bag_item("my_data_bag", "my")
 datacenter = node.name.split('-')[0]
