@@ -88,8 +88,8 @@ if server_type=='druidcoordinator' or node.chef_environment=='local'
       owner "root"
       group "root"
       mode "0644"
-      variables({
-        :zookeeper => zookeeper, :druid_port => coodrdinator_druid_port, :version => version,
+      variables lazy({
+        :zookeeper => File.read("#{Chef::Config[:file_cache_path]}/zookeeper_hosts"), :druid_port => coodrdinator_druid_port, :version => version,
         :mysql_username => mysql_username, :mysql_password => mysql_password, :mysql_host => mysql_host, :mysql_database => mysql_database,
         :ipaddress => ipaddress
       })
