@@ -1,0 +1,30 @@
+druid.host=<%=@ipaddress%>:<%=@druid_port%>
+druid.service=realtime
+druid.port=<%=@druid_port%>
+
+druid.zk.service.host=<%=@zookeeper%>
+
+
+druid.extensions.coordinates=["io.druid.extensions:druid-kafka-eight:<%=@version%>","io.druid.extensions:druid-s3-extensions:<%=@version%>"]
+
+# Change this config to db to hand off to the rest of the Druid cluster
+druid.publish.type=db
+
+# These configs are only required for real hand off
+druid.db.connector.connectURI=jdbc\:mysql\://<%=@mysql_host%>\:3306/<%=@mysql_database%>
+druid.db.connector.user=<%=@mysql_username%>
+druid.db.connector.password=<%=@mysql_password%>
+
+druid.processing.buffer.sizeBytes=100000000
+druid.processing.numThreads=1
+
+druid.monitoring.monitors=["io.druid.segment.realtime.RealtimeMetricsMonitor"]
+
+druid.s3.secretKey=<%=@AWS_SECRET_ACCESS_KEY%>
+druid.s3.accessKey=<%=@AWS_ACCESS_KEY_ID%>
+
+druid.storage.type=s3
+druid.storage.bucket=<%=@s3bucket%>
+druid.storage.baseKey=<%=@s3basekey%>
+
+druid.realtime.specFile=/var/realtime.spec 

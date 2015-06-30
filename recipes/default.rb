@@ -1,8 +1,7 @@
 
 
-#http://static.druid.io/artifacts/releases/druid-0.7.3-bin.tar.gz
-version="0.7.3"
 
+version="0.7.3"
 bash "install_druid" do
   user "root"
   cwd "/var"

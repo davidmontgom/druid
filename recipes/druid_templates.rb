@@ -19,7 +19,7 @@ mysql_password = db[node.chef_environment][location]['druid']['mysql_password']
 mysql_database = db[node.chef_environment][location]['druid']['mysql_database']
 domain = db[node.chef_environment]['domain']
 
-version="0.6.146"
+version="0.7.3"
 
 execute "restart_supervisorctl_overlord" do
   command "sudo supervisorctl restart overlord_server:"
@@ -75,9 +75,9 @@ end
 
                  
 if server_type=='druidcoordinator' or node.chef_environment=='local'
-  template "/var/druid/config/coordinator/runtime.properties" do
-      path "/var/druid/config/coordinator/runtime.properties"
-      source "coordinator.runtime.properties.erb"
+  template "/var/druid-#{version}/config/coordinator/runtime.properties" do
+      path "/var/druid-#{version}/config/coordinator/runtime.properties"
+      source "coordinator.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -104,9 +104,9 @@ if server_type=='druidcoordinator' or node.chef_environment=='local'
 end
 
 if server_type=='druidbroker' or node.chef_environment=='local'
-  template "/var/druid/config/broker/runtime.properties" do
-      path "/var/druid/config/broker/runtime.properties"
-      source "broker.runtime.properties.erb"
+  template "/var/druid-#{version}/config/broker/runtime.properties" do
+      path "/var/druid-#{version}/config/broker/runtime.properties"
+      source "broker.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -133,9 +133,9 @@ if server_type=='druidbroker' or node.chef_environment=='local'
 end
 
 if server_type=='druidhistorical' or node.chef_environment=='local'
-  template "/var/druid/config/historical/runtime.properties" do
-      path "/var/druid/config/historical/runtime.properties"
-      source "historical.runtime.properties.erb"
+  template "/var/druid-#{version}/config/historical/runtime.properties" do
+      path "/var/druid-#{version}/config/historical/runtime.properties"
+      source "historical.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -163,9 +163,9 @@ if server_type=='druidhistorical' or node.chef_environment=='local'
 end
 
 if server_type=='druidoverlord' or node.chef_environment=='local'
-  template "/var/druid/config/overlord/runtime.properties" do
-      path "/var/druid/config/overlord/runtime.properties"
-      source "overlord.runtime.properties.erb"
+  template "/var/druid-#{version}/config/overlord/runtime.properties" do
+      path "/var/druid-#{version}/config/overlord/runtime.properties"
+      source "overlord.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -193,9 +193,9 @@ if server_type=='druidoverlord' or node.chef_environment=='local'
 end
 
 if server_type=='druidrealtime' or node.chef_environment=='local'
-  template "/var/druid/config/realtime/runtime.properties" do
-      path "/var/druid/config/realtime/runtime.properties"
-      source "realtime.runtime.properties.erb"
+  template "/var/druid-#{version}/config/realtime/runtime.properties" do
+      path "/var/druid-#{version}/config/realtime/runtime.properties"
+      source "realtime.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -223,7 +223,7 @@ if server_type=='druidrealtime' or node.chef_environment=='local'
     
     template "/var/realtime.spec" do
       path "/var/realtime.spec"
-      source "realtime.spec.erb"
+      source "realtime.spec.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -243,9 +243,9 @@ end
 if node.chef_environment=='local'
   
 
-    template "/var/druid/config/overlord/runtime.properties" do
-      path "/var/druid/config/overlord/runtime.properties"
-      source "overlord.runtime.properties.erb"
+    template "/var/druid-#{version}/config/overlord/runtime.properties" do
+      path "/var/druid-#{version}/config/overlord/runtime.properties"
+      source "overlord.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -260,9 +260,9 @@ if node.chef_environment=='local'
       
     end
     
-    template "/var/druid/config/broker/runtime.properties" do
-      path "/var/druid/config/broker/runtime.properties"
-      source "broker.runtime.properties.erb"
+    template "/var/druid-#{version}/config/broker/runtime.properties" do
+      path "/var/druid-#{version}/config/broker/runtime.properties"
+      source "broker.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -273,9 +273,9 @@ if node.chef_environment=='local'
       notifies :run, "execute[restart_supervisorctl_broker]"
     end
     
-    template "/var/druid/config/historical/runtime.properties" do
-      path "/var/druid/config/historical/runtime.properties"
-      source "historical.runtime.properties.erb"
+    template "/var/druid-#{version}/config/historical/runtime.properties" do
+      path "/var/druid-#{version}/config/historical/runtime.properties"
+      source "historical.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -303,9 +303,9 @@ if node.chef_environment=='local'
     end
 =end
     
-    template "/var/druid/config/realtime/runtime.properties" do
-      path "/var/druid/config/realtime/runtime.properties"
-      source "realtime.runtime.properties.erb"
+    template "/var/druid-#{version}/config/realtime/runtime.properties" do
+      path "/var/druid-#{version}/config/realtime/runtime.properties"
+      source "realtime.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -321,7 +321,7 @@ if node.chef_environment=='local'
     
     template "/var/realtime.spec" do
       path "/var/realtime.spec"
-      source "realtime.spec.erb"
+      source "realtime.spec.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
