@@ -19,12 +19,6 @@ mysql_password = db[node.chef_environment][location]['druid']['mysql_password']
 mysql_database = db[node.chef_environment][location]['druid']['mysql_database']
 domain = db[node.chef_environment]['domain']
 
-if node.chef_environment=='local'
-  partitionNum = 0
-end
-if node.chef_environment!='local'
-  partitionNum = 0
-end
 
 version="0.7.3"
 
@@ -201,6 +195,13 @@ if server_type=='druidoverlord' or node.chef_environment=='local'
 end
 
 if server_type=='druidrealtime' or node.chef_environment=='local'
+  if File.exists?("/var/shard_index")
+    partitionNum = File.read("/var/shard_index")
+  end
+  if node.chef_environment=='local'
+    partitionNum = 0
+  end
+
   template "/var/druid-#{version}/config/realtime/runtime.properties" do
       path "/var/druid-#{version}/config/realtime/runtime.properties"
       source "realtime.runtime.properties.#{version}.erb"
@@ -251,6 +252,7 @@ end
 
 if node.chef_environment=='local'
   
+    partitionNum = 0
 
     template "/var/druid-#{version}/config/overlord/runtime.properties" do
       path "/var/druid-#{version}/config/overlord/runtime.properties"
