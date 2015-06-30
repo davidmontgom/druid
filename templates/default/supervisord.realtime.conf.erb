@@ -1,5 +1,5 @@
 [program:realtime]
-command = /usr/bin/java -Xmx256m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Ddruid.realtime.specFile=/var/realtime.spec -classpath /var/druid/lib/*:/var/druid-<%=@version%>/config/realtime io.druid.cli.Main server realtime
+command = /usr/bin/java -Xmx256m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -Ddruid.realtime.specFile=/var/realtime.spec -classpath /var/druid-<%=@version%>/lib/*:/var/druid-<%=@version%>/config/realtime io.druid.cli.Main server realtime
 process_name=%(program_name)s
 autostart=true
 autorestart=true
