@@ -2,14 +2,12 @@
 
 #http://static.druid.io/artifacts/releases/druid-0.7.3-bin.tar.gz
 version="0.7.3"
-#version="0.7.0"
-
 
 bash "install_druid" do
   user "root"
   cwd "/var"
   code <<-EOH
-    wget http://static.druid.io/artifacts/releases/druid-services-#{version}-bin.tar.gz
+    wget http://static.druid.io/artifacts/releases/druid-#{version}-bin.tar.gz
     #tar -zxvf druid-services-*-bin.tar.gz
     tar -zxvf druid-services-#{version}-bin.tar.gz
     #mv druid-services-#{version} druid
