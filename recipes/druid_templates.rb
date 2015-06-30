@@ -19,6 +19,13 @@ mysql_password = db[node.chef_environment][location]['druid']['mysql_password']
 mysql_database = db[node.chef_environment][location]['druid']['mysql_database']
 domain = db[node.chef_environment]['domain']
 
+if node.chef_environment=='local'
+  partitionNum = 0
+end
+if node.chef_environment!='local'
+  partitionNum = 0
+end
+
 version="0.7.3"
 
 execute "restart_supervisorctl_overlord" do
@@ -229,7 +236,8 @@ if server_type=='druidrealtime' or node.chef_environment=='local'
       mode "0644"
       variables({
         :zookeeper => zookeeper, :version => version, :environment => node.chef_environment,
-        :AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY
+        :AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY,
+        :partitionNum => partitionNum
       })
       #notifies :restart, resources(:service => "supervisord")
       notifies :run, "execute[restart_supervisorctl_realtime]"
@@ -327,7 +335,8 @@ if node.chef_environment=='local'
       mode "0644"
       variables({
         :zookeeper => zookeeper, :version => version, :environment => node.chef_environment,
-        :AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY
+        :AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY,
+        :partitionNum => partitionNum
       })
       #notifies :restart, resources(:service => "supervisord")
       notifies :run, "execute[restart_supervisorctl_realtime]"
