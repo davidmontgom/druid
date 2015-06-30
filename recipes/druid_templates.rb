@@ -97,7 +97,7 @@ if server_type=='druidcoordinator' or node.chef_environment=='local'
       group "root"
       mode "0755"
       variables({
-        :interval => "240"
+        :interval => "240",:version => version
       })
       notifies :run, "execute[restart_supervisorctl_coordinator]"
     end
@@ -126,7 +126,7 @@ if server_type=='druidbroker' or node.chef_environment=='local'
       group "root"
       mode "0755"
       variables({
-        :interval => "240"
+        :interval => "240",:version => version
       })
       notifies :run, "execute[restart_supervisorctl_broker]"
     end
@@ -156,7 +156,7 @@ if server_type=='druidhistorical' or node.chef_environment=='local'
       group "root"
       mode "0755"
       variables({
-        :interval => "240"
+        :interval => "240",:version => version
       })
       notifies :run, "execute[restart_supervisorctl_historical]"
     end
@@ -186,7 +186,7 @@ if server_type=='druidoverlord' or node.chef_environment=='local'
       group "root"
       mode "0755"
       variables({
-        :interval => "240"
+        :interval => "240",:version => version
       })
       notifies :run, "execute[restart_supervisorctl_overlord]"
     end
@@ -216,7 +216,7 @@ if server_type=='druidrealtime' or node.chef_environment=='local'
       group "root"
       mode "0755"
       variables({
-        :interval => "240"
+        :interval => "240",:version => version
       })
       notifies :run, "execute[restart_supervisorctl_realtime]"
     end
