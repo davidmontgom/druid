@@ -1,8 +1,8 @@
 
 
-
-version="0.6.146"
-
+#http://static.druid.io/artifacts/releases/druid-0.7.3-bin.tar.gz
+version="0.7.3"
+#version="0.7.0"
 
 
 bash "install_druid" do
@@ -10,11 +10,12 @@ bash "install_druid" do
   cwd "/var"
   code <<-EOH
     wget http://static.druid.io/artifacts/releases/druid-services-#{version}-bin.tar.gz
-    tar -zxvf druid-services-*-bin.tar.gz
-    mv druid-services-#{version} druid
+    #tar -zxvf druid-services-*-bin.tar.gz
+    tar -zxvf druid-services-#{version}-bin.tar.gz
+    #mv druid-services-#{version} druid
   EOH
   action :run
-  not_if {File.exists?("/var/druid")}
+  not_if {File.exists?("/var/druid-#{version}")}
 end
 
 =begin
