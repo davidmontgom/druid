@@ -19,7 +19,14 @@ mysql_password = db[node.chef_environment][location]['druid']['mysql_password']
 mysql_database = db[node.chef_environment][location]['druid']['mysql_database']
 domain = db[node.chef_environment]['domain']
 
-version="0.6.146"
+if node.chef_environment=='local'
+  partitionNum = 0
+end
+if node.chef_environment!='local'
+  partitionNum = 0
+end
+
+version="0.7.3"
 
 execute "restart_supervisorctl_overlord" do
   command "sudo supervisorctl restart overlord_server:"
@@ -75,12 +82,13 @@ end
 
                  
 if server_type=='druidcoordinator' or node.chef_environment=='local'
-  template "/var/druid/config/coordinator/runtime.properties" do
-      path "/var/druid/config/coordinator/runtime.properties"
-      source "coordinator.runtime.properties.erb"
+  template "/var/druid-#{version}/config/coordinator/runtime.properties" do
+      path "/var/druid-#{version}/config/coordinator/runtime.properties"
+      source "coordinator.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
+      #variables lazy {{:zookeeper => File.read("/var/zookeeper_hosts")}}
       variables({
         :zookeeper => zookeeper, :druid_port => coodrdinator_druid_port, :version => version,
         :mysql_username => mysql_username, :mysql_password => mysql_password, :mysql_host => mysql_host, :mysql_database => mysql_database,
@@ -97,16 +105,16 @@ if server_type=='druidcoordinator' or node.chef_environment=='local'
       group "root"
       mode "0755"
       variables({
-        :interval => "240"
+        :interval => "240",:version => version
       })
       notifies :run, "execute[restart_supervisorctl_coordinator]"
     end
 end
 
 if server_type=='druidbroker' or node.chef_environment=='local'
-  template "/var/druid/config/broker/runtime.properties" do
-      path "/var/druid/config/broker/runtime.properties"
-      source "broker.runtime.properties.erb"
+  template "/var/druid-#{version}/config/broker/runtime.properties" do
+      path "/var/druid-#{version}/config/broker/runtime.properties"
+      source "broker.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -126,16 +134,16 @@ if server_type=='druidbroker' or node.chef_environment=='local'
       group "root"
       mode "0755"
       variables({
-        :interval => "240"
+        :interval => "240",:version => version
       })
       notifies :run, "execute[restart_supervisorctl_broker]"
     end
 end
 
 if server_type=='druidhistorical' or node.chef_environment=='local'
-  template "/var/druid/config/historical/runtime.properties" do
-      path "/var/druid/config/historical/runtime.properties"
-      source "historical.runtime.properties.erb"
+  template "/var/druid-#{version}/config/historical/runtime.properties" do
+      path "/var/druid-#{version}/config/historical/runtime.properties"
+      source "historical.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -156,16 +164,16 @@ if server_type=='druidhistorical' or node.chef_environment=='local'
       group "root"
       mode "0755"
       variables({
-        :interval => "240"
+        :interval => "240",:version => version
       })
       notifies :run, "execute[restart_supervisorctl_historical]"
     end
 end
 
 if server_type=='druidoverlord' or node.chef_environment=='local'
-  template "/var/druid/config/overlord/runtime.properties" do
-      path "/var/druid/config/overlord/runtime.properties"
-      source "overlord.runtime.properties.erb"
+  template "/var/druid-#{version}/config/overlord/runtime.properties" do
+      path "/var/druid-#{version}/config/overlord/runtime.properties"
+      source "overlord.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -186,16 +194,16 @@ if server_type=='druidoverlord' or node.chef_environment=='local'
       group "root"
       mode "0755"
       variables({
-        :interval => "240"
+        :interval => "240",:version => version
       })
       notifies :run, "execute[restart_supervisorctl_overlord]"
     end
 end
 
 if server_type=='druidrealtime' or node.chef_environment=='local'
-  template "/var/druid/config/realtime/runtime.properties" do
-      path "/var/druid/config/realtime/runtime.properties"
-      source "realtime.runtime.properties.erb"
+  template "/var/druid-#{version}/config/realtime/runtime.properties" do
+      path "/var/druid-#{version}/config/realtime/runtime.properties"
+      source "realtime.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -216,20 +224,21 @@ if server_type=='druidrealtime' or node.chef_environment=='local'
       group "root"
       mode "0755"
       variables({
-        :interval => "240"
+        :interval => "240",:version => version
       })
       notifies :run, "execute[restart_supervisorctl_realtime]"
     end
     
     template "/var/realtime.spec" do
       path "/var/realtime.spec"
-      source "realtime.spec.erb"
+      source "realtime.spec.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
       variables({
         :zookeeper => zookeeper, :version => version, :environment => node.chef_environment,
-        :AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY
+        :AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY,
+        :partitionNum => partitionNum
       })
       #notifies :restart, resources(:service => "supervisord")
       notifies :run, "execute[restart_supervisorctl_realtime]"
@@ -243,9 +252,9 @@ end
 if node.chef_environment=='local'
   
 
-    template "/var/druid/config/overlord/runtime.properties" do
-      path "/var/druid/config/overlord/runtime.properties"
-      source "overlord.runtime.properties.erb"
+    template "/var/druid-#{version}/config/overlord/runtime.properties" do
+      path "/var/druid-#{version}/config/overlord/runtime.properties"
+      source "overlord.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -260,9 +269,9 @@ if node.chef_environment=='local'
       
     end
     
-    template "/var/druid/config/broker/runtime.properties" do
-      path "/var/druid/config/broker/runtime.properties"
-      source "broker.runtime.properties.erb"
+    template "/var/druid-#{version}/config/broker/runtime.properties" do
+      path "/var/druid-#{version}/config/broker/runtime.properties"
+      source "broker.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -273,9 +282,9 @@ if node.chef_environment=='local'
       notifies :run, "execute[restart_supervisorctl_broker]"
     end
     
-    template "/var/druid/config/historical/runtime.properties" do
-      path "/var/druid/config/historical/runtime.properties"
-      source "historical.runtime.properties.erb"
+    template "/var/druid-#{version}/config/historical/runtime.properties" do
+      path "/var/druid-#{version}/config/historical/runtime.properties"
+      source "historical.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -303,9 +312,9 @@ if node.chef_environment=='local'
     end
 =end
     
-    template "/var/druid/config/realtime/runtime.properties" do
-      path "/var/druid/config/realtime/runtime.properties"
-      source "realtime.runtime.properties.erb"
+    template "/var/druid-#{version}/config/realtime/runtime.properties" do
+      path "/var/druid-#{version}/config/realtime/runtime.properties"
+      source "realtime.runtime.properties.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
@@ -321,13 +330,14 @@ if node.chef_environment=='local'
     
     template "/var/realtime.spec" do
       path "/var/realtime.spec"
-      source "realtime.spec.erb"
+      source "realtime.spec.#{version}.erb"
       owner "root"
       group "root"
       mode "0644"
       variables({
         :zookeeper => zookeeper, :version => version, :environment => node.chef_environment,
-        :AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY
+        :AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY,
+        :partitionNum => partitionNum
       })
       #notifies :restart, resources(:service => "supervisord")
       notifies :run, "execute[restart_supervisorctl_realtime]"

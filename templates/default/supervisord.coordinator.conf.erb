@@ -1,6 +1,6 @@
 [program:coordinator]
 
-command = /usr/bin/java -Xmx256m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -classpath /var/druid/lib/*:/var/druid/config/coordinator io.druid.cli.Main server coordinator
+command = /usr/bin/java -Xmx256m -Duser.timezone=UTC -Dfile.encoding=UTF-8 -classpath /var/druid-<%=@version%>/lib/*:/var/druid-<%=@version%>/config/coordinator io.druid.cli.Main server coordinator
 
 
 
@@ -13,12 +13,12 @@ killasgroup = true
 
 
 stdout_logfile=/tmp/coordinator.log
-stdout_logfile_maxbytes=100MB
-stdout_logfile_backups=10
+stdout_logfile_maxbytes=1MB
+stdout_logfile_backups=1
 
 stderr_logfile = /tmp/coordinator.err
-stderr_logfile_maxbytes=10MB
-stderr_logfile_backups=10
+stderr_logfile_maxbytes=1MB
+stderr_logfile_backups=1
 
 
 [group:coordinator_server]
