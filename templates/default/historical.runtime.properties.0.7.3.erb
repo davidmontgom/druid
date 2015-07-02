@@ -5,7 +5,7 @@ druid.port=<%=@druid_port%>
 druid.zk.service.host=<%=@zookeeper%>
 
 
-druid.extensions.coordinates=["io.druid.extensions:druid-s3-extensions:<%=@version%>"]
+druid.extensions.coordinates=["io.druid.extensions:druid-s3-extensions:<%=@version%>","io.druid.extensions:mysql-metadata-storage:<%=@version%>"]
 
 # Dummy read only AWS account (used to download example data)
 druid.s3.secretKey=<%=@AWS_SECRET_ACCESS_KEY%>

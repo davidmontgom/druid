@@ -4,7 +4,7 @@ druid.service=overlord
 
 druid.zk.service.host=<%=@zookeeper%>
 
-druid.extensions.coordinates=["io.druid.extensions:druid-kafka-eight:<%=@version%>"]
+druid.extensions.coordinates=["io.druid.extensions:mysql-metadata-storage:<%=@version%>","io.druid.extensions:druid-kafka-eight:<%=@version%>"]
 
 druid.metadata.storage.type=mysql
 druid.metadata.storage.connector.connectURI=jdbc\:mysql\://<%=@mysql_host%>\:3306/<%=@mysql_database%>

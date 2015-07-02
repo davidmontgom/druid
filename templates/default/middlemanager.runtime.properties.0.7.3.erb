@@ -2,7 +2,7 @@ druid.host=<%=@ipaddress%>:<%=@druid_port%>
 druid.port=:<%=@druid_port%>
 druid.service=druid/prod/middlemanager
 
-druid.extensions.coordinates=["io.druid.extensions:druid-s3-extensions:<%=@version%>","io.druid.extensions:druid-kafka-eight:<%=@version%>"]
+druid.extensions.coordinates=["io.druid.extensions:mysql-metadata-storage:<%=@version%>","io.druid.extensions:druid-s3-extensions:<%=@version%>","io.druid.extensions:druid-kafka-eight:<%=@version%>"]
 
 
 druid.zk.service.host=<%=@zookeeper%>

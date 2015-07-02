@@ -3,6 +3,7 @@ druid.service=coordinator
 druid.port=<%=@druid_port%>
 
 druid.zk.service.host=<%=@zookeeper%>
+druid.extensions.coordinates=["io.druid.extensions:druid-s3-extensions:<%=@version%>","io.druid.extensions:mysql-metadata-storage:<%=@version%>"]
 
 druid.metadata.storage.type=mysql
 druid.metadata.storage.connector.connectURI=jdbc\:mysql\://<%=@mysql_host%>\:3306/<%=@mysql_database%>
