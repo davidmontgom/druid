@@ -6,9 +6,10 @@ druid.zk.service.host=<%=@zookeeper%>
 
 druid.extensions.coordinates=["io.druid.extensions:druid-kafka-eight:<%=@version%>"]
 
-druid.db.connector.connectURI=jdbc\:mysql\://<%=@mysql_host%>\:3306/<%=@mysql_database%>
-druid.db.connector.user=<%=@mysql_username%>
-druid.db.connector.password=<%=@mysql_password%>
+druid.metadata.storage.type=mysql
+druid.metadata.storage.connector.connectURI=jdbc\:mysql\://<%=@mysql_host%>\:3306/<%=@mysql_database%>
+druid.metadata.storage.connector.user=<%=@mysql_username%>
+druid.metadata.storage.connector.password=<%=@mysql_password%>
 
 druid.selectors.indexing.serviceName=overlord
 druid.indexer.queue.startDelay=PT0M
