@@ -1,7 +1,6 @@
-
-
+#monit procmatch ".*/var/druid-0.7.3/config/realtime io.druid.cli.Main server realtime"
 check process <%=@role%>
-	with matching "/var/druid/config/<%=@role%> io.druid.cli.Main server <%=@role%>"
+	with matching "/var/druid-<%=@version%>/config/<%=@role%> io.druid.cli.Main server <%=@role%>"
 	start program = "/usr/local/bin/supervisorctl start <%=@role%>_server:"
 	stop program = "/usr/local/bin/supervisorctl stop <%=@role%>_server:"
 

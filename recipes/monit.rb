@@ -20,13 +20,13 @@ end
 
 
 service "monit"
-
+version="0.7.3"
 template "/etc/monit/conf.d/#{server_type}.conf" do
   path "/etc/monit/conf.d/#{server_type}.conf"
   source "monit.druid.conf.erb"
   owner "root"
   group "root"
   mode "0755"
-  variables :role => role
+  variables :role => role, :version => version
   notifies :restart, resources(:service => "monit")
 end
