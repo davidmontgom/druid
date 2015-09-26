@@ -20,7 +20,7 @@ end
 
 
 service "monit"
-version="0.7.3"
+version = node[:druid][:version]
 template "/etc/monit/conf.d/#{server_type}.conf" do
   path "/etc/monit/conf.d/#{server_type}.conf"
   source "monit.druid.conf.erb"
