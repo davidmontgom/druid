@@ -20,7 +20,7 @@ mysql_database = db[node.chef_environment][location]['druid']['mysql_database']
 domain = db[node.chef_environment]['domain']
 
 
-version="0.7.3"
+version = node[:druid][:version]
 
 execute "restart_supervisorctl_overlord" do
   command "sudo supervisorctl restart overlord_server:"

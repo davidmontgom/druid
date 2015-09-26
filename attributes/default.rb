@@ -1,1 +1,1 @@
-default['druid']['version'] = "0.6.146"
+default['druid']['version'] = "0.8.1"

@@ -1,7 +1,6 @@
 
 
-
-version="0.7.3"
+version = node[:druid][:version]
 bash "install_druid" do
   user "root"
   cwd "/var"

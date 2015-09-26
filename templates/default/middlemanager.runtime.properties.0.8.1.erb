@@ -1,0 +1,51 @@
+druid.host=<%=@ipaddress%>:<%=@druid_port%>
+druid.port=:<%=@druid_port%>
+druid.service=druid/prod/middlemanager
+
+druid.extensions.coordinates=["io.druid.extensions:mysql-metadata-storage:<%=@version%>","io.druid.extensions:druid-s3-extensions:<%=@version%>","io.druid.extensions:druid-kafka-eight:<%=@version%>"]
+
+
+druid.zk.service.host=<%=@zookeeper%>
+#druid.zk.paths.base=/druid/prod
+
+druid.discovery.curator.path=/prod/discovery
+
+druid.s3.secretKey=<%=@AWS_SECRET_ACCESS_KEY%>
+druid.s3.accessKey=<%=@AWS_ACCESS_KEY_ID%>
+
+# Store task logs in deep storage
+druid.indexer.logs.type=s3
+druid.indexer.logs.s3Bucket=#{LOGS_BUCKET}
+druid.indexer.logs.s3Prefix=prod/logs/v1
+
+# Dedicate more resources to peons
+druid.indexer.runner.javaOpts=-server -Xmx3g -XX:+UseG1GC -XX:MaxGCPauseMillis=100 -XX:+PrintGCDetails -XX:+PrintGCTimeStamps
+druid.indexer.task.baseTaskDir=/mnt/persistent/task/
+druid.indexer.task.chathandler.type=announce
+
+druid.indexer.fork.property.druid.indexer.hadoopWorkingPath=/tmp/druid-indexing
+druid.indexer.fork.property.druid.computation.buffer.size=536870912
+druid.indexer.fork.property.druid.processing.numThreads=3
+druid.indexer.fork.property.druid.request.logging.type=file
+druid.indexer.fork.property.druid.request.logging.dir=request_logs/
+druid.indexer.fork.property.druid.segmentCache.locations=[{"path": "/mnt/persistent/zk_druid", "maxSize": 0}]
+druid.indexer.fork.property.druid.server.http.numThreads=50
+druid.indexer.fork.property.druid.storage.type=s3
+druid.indexer.fork.property.druid.storage.baseKey=prod/v1
+druid.indexer.fork.property.druid.storage.bucket=#{LOGS_BUCKET}
+
+druid.worker.capacity=10
+druid.worker.ip=#{IP_ADDR}
+druid.worker.version=#{WORKER_VERSION}
+
+druid.selectors.indexing.serviceName=druid:prod:overlord
+
+druid.monitoring.monitors=["com.metamx.metrics.SysMonitor","com.metamx.metrics.JvmMonitor"]
+
+# Emit metrics over http
+druid.emitter=http
+druid.emitter.http.recipientBaseUrl=#{EMITTER_URL}
+
+# If you choose to compress ZK announcements, you must do so for every node type
+druid.announcer.type=batch
+druid.curator.compress=true
