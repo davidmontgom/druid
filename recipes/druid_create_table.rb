@@ -16,7 +16,6 @@ bash "install_druid_table" do
     echo 'CREATE SCHEMA IF NOT EXISTS #{mysql_database};' | mysql -u root -p#{mysql_password}
     echo 'ALTER DATABASE #{mysql_database} charset=utf8;' | mysql -u root -p#{mysql_password}
     echo "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '#{mysql_password}';" | mysql -u root -p#{mysql_password}
-    
     touch #{Chef::Config[:file_cache_path]}/druid_createtable.lock
   EOH
   action :run

@@ -9,14 +9,15 @@ db = data_bag_item("my_data_bag", "my")
 AWS_ACCESS_KEY_ID = db[node.chef_environment]['aws']['AWS_ACCESS_KEY_ID']
 AWS_SECRET_ACCESS_KEY = db[node.chef_environment]['aws']['AWS_SECRET_ACCESS_KEY']
 
-druid_master = db[node.chef_environment][location]['druid']['druid_master']
-s3bucket = db[node.chef_environment][location]['druid']['s3bucket']
-s3basekey = db[node.chef_environment][location]['druid']['s3basekey']
-ruleTable = db[node.chef_environment][location]['druid']['ruleTable']
-mysql_host = db[node.chef_environment][location]['druid']['mysql_host']
-mysql_username = db[node.chef_environment][location]['druid']['mysql_username']
-mysql_password = db[node.chef_environment][location]['druid']['mysql_password']
-mysql_database = db[node.chef_environment][location]['druid']['mysql_database']
+druid = data_bag_item("my_data_bag", "druid")
+druid_master = druid[node.chef_environment][datacenter][location]['druid_master']
+s3bucket = druid[node.chef_environment][datacenter][location]['s3bucket']
+s3basekey = druid[node.chef_environment][datacenter][location]['s3basekey']
+ruleTable = druid[node.chef_environment][datacenter][location]['ruleTable']
+mysql_host = druid[node.chef_environment][datacenter][location]['mysql_host']
+mysql_username = druid[node.chef_environment][datacenter][location]['mysql_username']
+mysql_password = druid[node.chef_environment][datacenter][location]['mysql_password']
+mysql_database = druid[node.chef_environment][datacenter][location]['mysql_database']
 domain = db[node.chef_environment]['domain']
 
 
