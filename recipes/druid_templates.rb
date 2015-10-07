@@ -44,9 +44,11 @@ execute "restart_supervisorctl_historical" do
   action :nothing
 end
 
+=begin
 if File.exists?("#{Chef::Config[:file_cache_path]}/zookeeper_hosts")
     zookeeper = File.read("#{Chef::Config[:file_cache_path]}/zookeeper_hosts")
 end
+=end
 
 
 if node.chef_environment=='local'
