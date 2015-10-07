@@ -196,12 +196,6 @@ if server_type=='druidoverlord' or node.chef_environment=='local'
 end
 
 if server_type=='druidrealtime' or node.chef_environment=='local'
-  if File.exists?("/var/shard_index")
-    partitionNum = File.read("/var/shard_index")
-  end
-  if node.chef_environment=='local'
-    partitionNum = 0
-  end
 
   template "/var/druid-#{version}/config/realtime/runtime.properties" do
       path "/var/druid-#{version}/config/realtime/runtime.properties"
@@ -228,21 +222,6 @@ if server_type=='druidrealtime' or node.chef_environment=='local'
       variables({
         :interval => "240",:version => version
       })
-      notifies :run, "execute[restart_supervisorctl_realtime]"
-    end
-    
-    template "/var/realtime.spec" do
-      path "/var/realtime.spec"
-      source "realtime.spec.#{version}.erb"
-      owner "root"
-      group "root"
-      mode "0644"
-      variables({
-        :zookeeper => zookeeper, :version => version, :environment => node.chef_environment,
-        :AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY,
-        :partitionNum => partitionNum
-      })
-      #notifies :restart, resources(:service => "supervisord")
       notifies :run, "execute[restart_supervisorctl_realtime]"
     end
 end
@@ -326,21 +305,6 @@ if node.chef_environment=='local'
         :AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY,:ipaddress => ipaddress,
         :mysql_username => mysql_username, :mysql_password => mysql_password, :mysql_host => mysql_host, :mysql_database => mysql_database,
         :s3bucket => s3bucket, :s3basekey => s3basekey
-      })
-      #notifies :restart, resources(:service => "supervisord")
-      notifies :run, "execute[restart_supervisorctl_realtime]"
-    end
-    
-    template "/var/realtime.spec" do
-      path "/var/realtime.spec"
-      source "realtime.spec.#{version}.erb"
-      owner "root"
-      group "root"
-      mode "0644"
-      variables({
-        :zookeeper => zookeeper, :version => version, :environment => node.chef_environment,
-        :AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY,
-        :partitionNum => partitionNum
       })
       #notifies :restart, resources(:service => "supervisord")
       notifies :run, "execute[restart_supervisorctl_realtime]"
