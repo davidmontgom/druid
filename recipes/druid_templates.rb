@@ -84,8 +84,8 @@ if server_type=='druidcoordinator' or node.chef_environment=='local'
       group "root"
       mode "0644"
       #variables lazy {{:zookeeper => File.read("/var/zookeeper_hosts")}}
-      variables({
-        :zookeeper => zookeeper, :druid_port => coodrdinator_druid_port, :version => version,
+      variables lazy({
+        :zookeeper => File.read("#{Chef::Config[:file_cache_path]}/zookeeper_hosts"), :druid_port => coodrdinator_druid_port, :version => version,
         :mysql_username => mysql_username, :mysql_password => mysql_password, :mysql_host => mysql_host, :mysql_database => mysql_database,
         :ipaddress => ipaddress
       })
@@ -113,8 +113,8 @@ if server_type=='druidbroker' or node.chef_environment=='local'
       owner "root"
       group "root"
       mode "0644"
-      variables({
-        :zookeeper => zookeeper, :druid_port => broker_druid_port, :version => version,
+      variables lazy({
+        :zookeeper => File.read("#{Chef::Config[:file_cache_path]}/zookeeper_hosts"), :druid_port => broker_druid_port, :version => version,
         :mysql_username => mysql_username, :mysql_password => mysql_password, :mysql_host => mysql_host, :mysql_database => mysql_database,
         :ipaddress => ipaddress
       })
@@ -142,8 +142,8 @@ if server_type=='druidhistorical' or node.chef_environment=='local'
       owner "root"
       group "root"
       mode "0644"
-      variables({
-        :zookeeper => zookeeper, :druid_port => historical_druid_port, :version => version,
+      variables lazy({
+        :zookeeper => File.read("#{Chef::Config[:file_cache_path]}/zookeeper_hosts"), :druid_port => historical_druid_port, :version => version,
         :mysql_username => mysql_username, :mysql_password => mysql_password, :mysql_host => mysql_host, :mysql_database => mysql_database,
         :ipaddress => ipaddress,:AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY,
         :s3bucket => s3bucket, :s3basekey => s3basekey
@@ -172,8 +172,8 @@ if server_type=='druidoverlord' or node.chef_environment=='local'
       owner "root"
       group "root"
       mode "0644"
-      variables({
-        :zookeeper => zookeeper, :druid_port => overlord_druid_port, :version => version,
+      variables lazy({
+        :zookeeper => File.read("#{Chef::Config[:file_cache_path]}/zookeeper_hosts"), :druid_port => overlord_druid_port, :version => version,
         :mysql_username => mysql_username, :mysql_password => mysql_password, :mysql_host => mysql_host, :mysql_database => mysql_database,
         :ipaddress => ipaddress,:AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY,
         :s3bucket => s3bucket, :s3basekey => s3basekey
@@ -203,8 +203,8 @@ if server_type=='druidrealtime' or node.chef_environment=='local'
       owner "root"
       group "root"
       mode "0644"
-      variables({
-        :zookeeper => zookeeper, :druid_port => realtime_druid_port, :version => version,
+      variables lazy({
+        :zookeeper => File.read("#{Chef::Config[:file_cache_path]}/zookeeper_hosts"), :druid_port => realtime_druid_port, :version => version,
         :mysql_username => mysql_username, :mysql_password => mysql_password, :mysql_host => mysql_host, :mysql_database => mysql_database,
         :ipaddress => ipaddress,:AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY,
         :s3bucket => s3bucket, :s3basekey => s3basekey
