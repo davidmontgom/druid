@@ -1,24 +1,32 @@
-
 datacenter = node.name.split('-')[0]
-server_type = node.name.split('-')[1]
+environment = node.name.split('-')[1]
 location = node.name.split('-')[2]
+server_type = node.name.split('-')[3]
+slug = node.name.split('-')[4] 
+cluster_slug = File.read("/var/cluster_slug.txt")
+cluster_slug = cluster_slug.gsub(/\n/, "") 
 
+data_bag("meta_data_bag")
+git = data_bag_item("meta_data_bag", "git")
+aws = data_bag_item("meta_data_bag", "aws")
+domain = aws[node.chef_environment]["route53"]["domain"]
+AWS_ACCESS_KEY_ID = aws[node.chef_environment]['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY = aws[node.chef_environment]['AWS_SECRET_ACCESS_KEY']
 
-data_bag("my_data_bag")
-db = data_bag_item("my_data_bag", "my")
-AWS_ACCESS_KEY_ID = db[node.chef_environment]['aws']['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY = db[node.chef_environment]['aws']['AWS_SECRET_ACCESS_KEY']
+data_bag("server_data_bag")
+mysql_server = data_bag_item("server_data_bag", "mysql")
+mysql_password = mysql_server[datacenter][environment][location][cluster_slug]['meta']['password']
+mysql_username = mysql_server[datacenter][environment][location][cluster_slug]['meta']['username']
+mysql_database = "druid"
+mysql_host = "primary-druid-mysql-#{datacenter}-#{environment}-#{location}-#{slug}.#{domain}"
+
+data_bag("server_data_bag")
+mysql_server = data_bag_item("server_data_bag", "druid")
 
 druid = data_bag_item("my_data_bag", "druid")
-druid_master = druid[node.chef_environment][datacenter][location]['druid_master']
-s3bucket = druid[node.chef_environment][datacenter][location]['s3bucket']
-s3basekey = druid[node.chef_environment][datacenter][location]['s3basekey']
-ruleTable = druid[node.chef_environment][datacenter][location]['ruleTable']
-mysql_host = druid[node.chef_environment][datacenter][location]['mysql_host']
-mysql_username = druid[node.chef_environment][datacenter][location]['mysql_username']
-mysql_password = druid[node.chef_environment][datacenter][location]['mysql_password']
-mysql_database = druid[node.chef_environment][datacenter][location]['mysql_database']
-domain = db[node.chef_environment]['domain']
+s3bucket = druid[node.chef_environment]['s3bucket']
+s3basekey = druid[node.chef_environment]['s3basekey']
+ruleTable = druid[node.chef_environment]['ruleTable']
 
 
 version = node[:druid][:version]

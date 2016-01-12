@@ -1,6 +1,10 @@
 datacenter = node.name.split('-')[0]
-server_type = node.name.split('-')[1]
+environment = node.name.split('-')[1]
 location = node.name.split('-')[2]
+server_type = node.name.split('-')[3]
+slug = node.name.split('-')[4] 
+cluster_slug = File.read("/var/cluster_slug.txt")
+cluster_slug = cluster_slug.gsub(/\n/, "") 
 
 if server_type=='druidcoordinator'
   role = 'coordinator'

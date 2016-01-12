@@ -1,0 +1,19 @@
+druid.host=<%=@ipaddress%>:<%=@druid_port%>
+druid.port=<%=@druid_port%>
+druid.service=overlord
+
+druid.zk.service.host=<%=@zookeeper%>
+
+druid.extensions.coordinates=["io.druid.extensions:mysql-metadata-storage:<%=@version%>","io.druid.extensions:druid-kafka-eight:<%=@version%>"]
+
+druid.metadata.storage.type=mysql
+druid.metadata.storage.connector.connectURI=jdbc\:mysql\://<%=@mysql_host%>\:3306/<%=@mysql_database%>
+druid.metadata.storage.connector.user=<%=@mysql_username%>
+druid.metadata.storage.connector.password=<%=@mysql_password%>
+
+druid.selectors.indexing.serviceName=overlord
+druid.indexer.queue.startDelay=PT0M
+druid.indexer.runner.javaOpts="-server -Xmx1g"
+druid.indexer.runner.startPort=8088
+druid.indexer.fork.property.druid.processing.numThreads=1
+druid.indexer.fork.property.druid.computation.buffer.size=100000000

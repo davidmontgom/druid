@@ -1,13 +1,25 @@
-data_bag("my_data_bag")
-db = data_bag_item("my_data_bag", "my")
 datacenter = node.name.split('-')[0]
-server_type = node.name.split('-')[1]
+environment = node.name.split('-')[1]
 location = node.name.split('-')[2]
+server_type = node.name.split('-')[3]
+slug = node.name.split('-')[4] 
+cluster_slug = File.read("/var/cluster_slug.txt")
+cluster_slug = cluster_slug.gsub(/\n/, "") 
 
-mysql_host = db[node.chef_environment][location]['druid']['mysql_host']
-mysql_username = db[node.chef_environment][location]['druid']['mysql_username']
-mysql_password = db[node.chef_environment][location]['druid']['mysql_password']
-mysql_database = db[node.chef_environment][location]['druid']['mysql_database']
+data_bag("meta_data_bag")
+git = data_bag_item("meta_data_bag", "git")
+aws = data_bag_item("meta_data_bag", "aws")
+domain = aws[node.chef_environment]["route53"]["domain"]
+
+data_bag("server_data_bag")
+mysql_server = data_bag_item("server_data_bag", server_type)
+mysql_password = mysql_server[datacenter][environment][location][cluster_slug]['meta']['password']
+mysql_username = mysql_server[datacenter][environment][location][cluster_slug]['meta']['username']
+mysql_database = "druid"
+mysql_host = "primary-druid-mysql-#{datacenter}-#{environment}-#{location}-#{slug}.#{domain}"
+
+
+
 
 bash "install_druid_table" do
   user "root"
