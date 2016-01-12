@@ -27,6 +27,36 @@ s3basekey = druid[node.chef_environment]['s3basekey']
 ruleTable = druid[node.chef_environment]['ruleTable']
 
 
+
+data_bag("server_data_bag")
+zookeeper_server = data_bag_item("server_data_bag", "zookeeper")
+if cluster_slug=="nocluster"
+  subdomain = "#{server_type}-#{datacenter}-#{environment}-#{location}-#{slug}"
+else
+  subdomain = "#{cluster_slug}-#{server_type}-#{datacenter}-#{environment}-#{location}-#{slug}"
+end
+required_count = zookeeper_server[datacenter][environment][location][cluster_slug]['required_count']
+full_domain = "#{subdomain}.#{domain}"
+
+
+script "zookeeper_druid" do
+  interpreter "python"
+  user "root"
+  cwd "/root"
+code <<-PYCODE
+zookeeper_hosts = []
+for i in xrange(int(#{required_count})):
+    zookeeper_hosts.append("%s-#{full_domain}:2181" % (i+1))
+zk_host_str = ','.join(zookeeper_hosts)   
+f = open('/var/chef/cache/zookeeper_hosts','w')
+f.write(zk_host_str)
+f.close()
+PYCODE
+end
+
+
+
+
 version = node[:druid][:version]
 
 execute "restart_supervisorctl_overlord" do
