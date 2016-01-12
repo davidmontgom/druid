@@ -21,10 +21,7 @@ mysql_username = mysql_server[datacenter][environment][location][cluster_slug_dr
 mysql_database = "druid"
 mysql_host = "primary-druid-mysql-#{datacenter}-#{environment}-#{location}-#{slug}.#{domain}"
 
-data_bag("server_data_bag")
-mysql_server = data_bag_item("server_data_bag", "druid")
-
-druid = data_bag_item("my_data_bag", "druid")
+druid = data_bag_item("meta_data_bag", "druid")
 s3bucket = druid[node.chef_environment]['s3bucket']
 s3basekey = druid[node.chef_environment]['s3basekey']
 ruleTable = druid[node.chef_environment]['ruleTable']
