@@ -5,6 +5,7 @@ server_type = node.name.split('-')[3]
 slug = node.name.split('-')[4] 
 cluster_slug = File.read("/var/cluster_slug.txt")
 cluster_slug = cluster_slug.gsub(/\n/, "") 
+cluster_slug_druid = "druid"
 
 data_bag("meta_data_bag")
 git = data_bag_item("meta_data_bag", "git")
@@ -15,8 +16,8 @@ AWS_SECRET_ACCESS_KEY = aws[node.chef_environment]['AWS_SECRET_ACCESS_KEY']
 
 data_bag("server_data_bag")
 mysql_server = data_bag_item("server_data_bag", "mysql")
-mysql_password = mysql_server[datacenter][environment][location][cluster_slug]['meta']['password']
-mysql_username = mysql_server[datacenter][environment][location][cluster_slug]['meta']['username']
+mysql_password = mysql_server[datacenter][environment][location][cluster_slug_druid]['meta']['password']
+mysql_username = mysql_server[datacenter][environment][location][cluster_slug_druid]['meta']['username']
 mysql_database = "druid"
 mysql_host = "primary-druid-mysql-#{datacenter}-#{environment}-#{location}-#{slug}.#{domain}"
 
