@@ -1,8 +1,8 @@
-datacenter = node.name.split('-')[0]
-environment = node.name.split('-')[1]
-location = node.name.split('-')[2]
-server_type = node.name.split('-')[3]
-slug = node.name.split('-')[4] 
+server_type = node.name.split('-')[0]
+slug = node.name.split('-')[1] 
+datacenter = node.name.split('-')[2]
+environment = node.name.split('-')[3]
+location = node.name.split('-')[4]
 cluster_slug = File.read("/var/cluster_slug.txt")
 cluster_slug = cluster_slug.gsub(/\n/, "") 
 cluster_slug_druid = "druid"
@@ -19,7 +19,7 @@ mysql_server = data_bag_item("server_data_bag", "mysql")
 mysql_password = mysql_server[datacenter][environment][location][cluster_slug_druid]['meta']['password']
 mysql_username = mysql_server[datacenter][environment][location][cluster_slug_druid]['meta']['username']
 mysql_database = "druid"
-mysql_host = "primary-druid-mysql-#{datacenter}-#{environment}-#{location}-#{slug}.#{domain}"
+mysql_host = "primary-mysql-#{slug}-#{datacenter}-#{environment}-#{location}-druid.#{domain}"
 
 druid = data_bag_item("meta_data_bag", "druid")
 s3bucket = druid[node.chef_environment]['s3bucket']
@@ -31,9 +31,9 @@ ruleTable = druid[node.chef_environment]['ruleTable']
 data_bag("server_data_bag")
 zookeeper_server = data_bag_item("server_data_bag", "zookeeper")
 if cluster_slug=="nocluster"
-  subdomain = "zookeeper-#{datacenter}-#{environment}-#{location}-#{slug}"
+  subdomain = "zookeeper--#{slug}-#{datacenter}-#{environment}-#{location}"
 else
-  subdomain = "#{cluster_slug}-zookeeper-#{datacenter}-#{environment}-#{location}-#{slug}"
+  subdomain = "zookeeper--#{slug}-#{datacenter}-#{environment}-#{location}-#{cluster_slug}"
 end
 required_count = zookeeper_server[datacenter][environment][location][cluster_slug]['required_count']
 full_domain = "#{subdomain}.#{domain}"

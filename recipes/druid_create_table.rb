@@ -29,7 +29,6 @@ bash "install_druid_table" do
   code <<-EOH
     echo 'CREATE SCHEMA IF NOT EXISTS #{mysql_database};' | mysql -u root -p#{mysql_password}
     echo 'ALTER DATABASE #{mysql_database} charset=utf8;' | mysql -u root -p#{mysql_password}
-    #echo "GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY '#{mysql_password}';" | mysql -u root -p#{mysql_password}
     touch #{Chef::Config[:file_cache_path]}/druid_createtable.lock
   EOH
   action :run
@@ -39,12 +38,7 @@ end
 
 #echo 'CREATE SCHEMA IF NOT EXISTS druid;' | mysql -u root -pFeed312!
 #echo "GRANT ALL ON druid.* TO 'druid'@'0.0.0.0' IDENTIFIED BY 'druid';" | mysql -u root -pFeed312!
-
 #GRANT ALL PRIVILEGES ON *.* TO root@222.127.178.107  IDENTIFIED BY 'Feed312!' WITH GRANT OPTION;
-
 #echo """GRANT ALL PRIVILEGES ON *.* TO root@222.127.178.107  IDENTIFIED BY 'Feed312!' WITH GRANT OPTION;""" % (ip_address,mysql_password)
-
-
-
 #echo """GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'Feed312!';""" | mysql -u root -pFeed312!
 #echo "FLUSH PRIVILEGES;" | mysql -u root -pFeed312!
