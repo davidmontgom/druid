@@ -31,9 +31,9 @@ ruleTable = druid[node.chef_environment]['ruleTable']
 data_bag("server_data_bag")
 zookeeper_server = data_bag_item("server_data_bag", "zookeeper")
 if cluster_slug=="nocluster"
-  subdomain = "zookeeper--#{slug}-#{datacenter}-#{environment}-#{location}"
+  subdomain = "zookeeper-#{slug}-#{datacenter}-#{environment}-#{location}"
 else
-  subdomain = "zookeeper--#{slug}-#{datacenter}-#{environment}-#{location}-#{cluster_slug}"
+  subdomain = "zookeeper-#{slug}-#{datacenter}-#{environment}-#{location}-#{cluster_slug}"
 end
 required_count = zookeeper_server[datacenter][environment][location][cluster_slug]['required_count']
 full_domain = "#{subdomain}.#{domain}"
