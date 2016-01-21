@@ -19,8 +19,20 @@ mysql_database = "druid"
 mysql_host = "primary-druid-mysql-#{datacenter}-#{environment}-#{location}-#{slug}.#{domain}"
 
 =begin
-CREATE SCHEMA IF NOT EXISTS druid;
-ALTER DATABASE druid charset=utf8;
+
+CREATE DATABASE druid DEFAULT CHARACTER SET utf8;
+CREATE USER 'druid'@'%' IDENTIFIED BY 'diurd';
+GRANT ALL ON druid.* TO 'druid'@'%' IDENTIFIED BY 'diurd';
+FLUSH PRIVILEGES;
+
+CREATE DATABASE druid1 DEFAULT CHARACTER SET utf8;
+CREATE USER 'druid1'@'%' IDENTIFIED BY 'diurd';
+GRANT ALL ON druid1.* TO 'druid1'@'%' IDENTIFIED BY 'diurd';
+FLUSH PRIVILEGES;
+
+
+
+
 =end
 
 bash "install_druid_table" do
