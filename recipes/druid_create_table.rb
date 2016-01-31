@@ -20,18 +20,26 @@ mysql_host = "primary-druid-mysql-#{datacenter}-#{environment}-#{location}-#{slu
 
 =begin
 
-CREATE DATABASE druid DEFAULT CHARACTER SET utf8;
+echo "CREATE USER 'fabric_store'@'%' IDENTIFIED BY 'Test101';" | mysql -u root -p#{password}
+    echo "GRANT ALTER, CREATE, CREATE VIEW, DELETE, DROP, EVENT, INDEX, INSERT, REFERENCES, SELECT, UPDATE ON mysql_fabric.* TO 'fabric_store'@'%';" | mysql -u root -p#{password}
+    echo "FLUSH PRIVILEGES;" | mysql -u root -p#{password}
+
+CREATE DATABASE druid DEFAULT CHARACTER SET utf8;   CHARACTER SET utf8
 CREATE USER 'druid'@'%' IDENTIFIED BY 'diurd';
 GRANT ALL ON druid.* TO 'druid'@'%' IDENTIFIED BY 'diurd';
 FLUSH PRIVILEGES;
 
-CREATE DATABASE druid1 DEFAULT CHARACTER SET utf8;
-CREATE USER 'druid1'@'%' IDENTIFIED BY 'diurd';
-GRANT ALL ON druid1.* TO 'druid1'@'%' IDENTIFIED BY 'diurd';
+
+
+GRANT ALL ON *.* TO 'root'@'%' IDENTIFIED BY 'Test101';
+CREATE USER 'druid'@'%' IDENTIFIED BY 'diurd';
+
+new
+http://dba.stackexchange.com/questions/30768/access-denied-for-user-root
+grant all privileges on *.* to 'root'@'%' with grant option;
+CREATE DATABASE druid DEFAULT CHARACTER SET utf8;
+CREATE USER 'druid'@'%' IDENTIFIED BY 'diurd';
 FLUSH PRIVILEGES;
-
-
-
 
 =end
 
