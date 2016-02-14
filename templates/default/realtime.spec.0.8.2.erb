@@ -1,7 +1,9 @@
 [
+
+<% @realtime_list.each_with_index do |realtime_hash, index| %>
   {
     "dataSchema" : {
-      "dataSource" : "datasource-topic-pixel",
+      "dataSource" : "<%=realtime_hash["dataSource"]%>",
       "parser" : {
         "type" : "string",
         "parseSpec" : {
@@ -19,7 +21,7 @@
       },
       "metricsSpec" : [{
         "type" : "count",
-        "name" : "pixel"
+        "name" : "<%=realtime_hash["name"]%>"
       }],
       "granularitySpec" : {
         "type" : "uniform",
@@ -32,16 +34,16 @@
       "firehose": {
         "type": "kafka-0.8",
         "consumerProps": {
-          "zookeeper.connect": "<%=@zookeeper%>",
+          "zookeeper.connect": "<%=zookeeper%>",
           "zookeeper.connection.timeout.ms" : "15000",
           "zookeeper.session.timeout.ms" : "15000",
           "zookeeper.sync.time.ms" : "5000",
-          "group.id": "topic-pixel-<%=@environment%>",
+          "group.id": "<%=realtime_hash["group.id"]%>",
           "fetch.message.max.bytes" : "1048586",
           "auto.offset.reset": "largest",
           "auto.commit.enable": "false"
         },
-        "feed": "topic-pixel-<%=@environment%>"
+        "feed": "<%=realtime_hash["feed"]%>"
       },
       "plumber": {
         "type": "realtime"
@@ -50,196 +52,7 @@
     "tuningConfig": {
       "shardSpec": {
         		"type": "linear",
-        		"partitionNum": <%=@partitionNum%>
-      },
-      "type" : "realtime",
-      "maxRowsInMemory": 500000,
-      "intermediatePersistPeriod": "PT10m",
-      "windowPeriod": "PT10m",
-      "basePersistDirectory": "\/tmp\/realtime\/basePersist",
-      "rejectionPolicy": {
-        "type": "serverTime"
-      }
-    }
-  },
- {
-    "dataSchema" : {
-      "dataSource" : "datasource-topic-impression",
-      "parser" : {
-        "type" : "string",
-        "parseSpec" : {
-          "format" : "json",
-          "timestampSpec" : {
-            "column": "utcdt",
-            "format": "iso"
-          },
-          "dimensionsSpec" : {
-            "dimensions": [],
-            "dimensionExclusions" : [],
-            "spatialDimensions" : []
-          }
-        }
-      },
-      "metricsSpec" : [{
-        "type" : "count",
-        "name" : "impression"
-      }],
-      "granularitySpec" : {
-        "type" : "uniform",
-        "segmentGranularity" : "minute",
-        "queryGranularity" : "NONE"
-      }
-    },
-    "ioConfig" : {
-      "type" : "realtime",
-      "firehose": {
-        "type": "kafka-0.8",
-        "consumerProps": {
-          "zookeeper.connect": "<%=@zookeeper%>",
-          "zookeeper.connection.timeout.ms" : "15000",
-          "zookeeper.session.timeout.ms" : "15000",
-          "zookeeper.sync.time.ms" : "5000",
-          "group.id": "topic-pixel-<%=@environment%>",
-          "fetch.message.max.bytes" : "1048586",
-          "auto.offset.reset": "largest",
-          "auto.commit.enable": "false"
-        },
-        "feed": "topic-impression-<%=@environment%>"
-      },
-      "plumber": {
-        "type": "realtime"
-      }
-    },
-    "tuningConfig": {
-      "shardSpec": {
-        		"type": "linear",
-        		"partitionNum": <%=@partitionNum%>
-      },
-      "type" : "realtime",
-      "maxRowsInMemory": 500000,
-      "intermediatePersistPeriod": "PT10m",
-      "windowPeriod": "PT10m",
-      "basePersistDirectory": "\/tmp\/realtime\/basePersist",
-      "rejectionPolicy": {
-        "type": "serverTime"
-      }
-    }
- },
- {
-    "dataSchema" : {
-      "dataSource" : "datasource-topic-click",
-      "parser" : {
-        "type" : "string",
-        "parseSpec" : {
-          "format" : "json",
-          "timestampSpec" : {
-            "column": "utcdt",
-            "format": "iso"
-          },
-          "dimensionsSpec" : {
-            "dimensions": [],
-            "dimensionExclusions" : [],
-            "spatialDimensions" : []
-          }
-        }
-      },
-      "metricsSpec" : [{
-        "type" : "count",
-        "name" : "click"
-      }],
-      "granularitySpec" : {
-        "type" : "uniform",
-        "segmentGranularity" : "minute",
-        "queryGranularity" : "NONE"
-      }
-    },
-    "ioConfig" : {
-      "type" : "realtime",
-      "firehose": {
-        "type": "kafka-0.8",
-        "consumerProps": {
-          "zookeeper.connect": "<%=@zookeeper%>",
-          "zookeeper.connection.timeout.ms" : "15000",
-          "zookeeper.session.timeout.ms" : "15000",
-          "zookeeper.sync.time.ms" : "5000",
-          "group.id": "topic-pixel-<%=@environment%>",
-          "fetch.message.max.bytes" : "1048586",
-          "auto.offset.reset": "largest",
-          "auto.commit.enable": "false"
-        },
-        "feed": "topic-click-<%=@environment%>"
-      },
-      "plumber": {
-        "type": "realtime"
-      }
-    },
-    "tuningConfig": {
-      "shardSpec": {
-        		"type": "linear",
-        		"partitionNum": <%=@partitionNum%>
-      },
-      "type" : "realtime",
-      "maxRowsInMemory": 500000,
-      "intermediatePersistPeriod": "PT10m",
-      "windowPeriod": "PT10m",
-      "basePersistDirectory": "\/tmp\/realtime\/basePersist",
-      "rejectionPolicy": {
-        "type": "serverTime"
-      }
-    }
- },
- {
-    "dataSchema" : {
-      "dataSource" : "datasource-topic-test",
-      "parser" : {
-        "type" : "string",
-        "parseSpec" : {
-          "format" : "json",
-          "timestampSpec" : {
-            "column": "utcdt",
-            "format": "iso"
-          },
-          "dimensionsSpec" : {
-            "dimensions": [],
-            "dimensionExclusions" : [],
-            "spatialDimensions" : []
-          }
-        }
-      },
-      "metricsSpec" : [{
-        "type" : "count",
-        "name" : "test"
-      }],
-      "granularitySpec" : {
-        "type" : "uniform",
-        "segmentGranularity" : "minute",
-        "queryGranularity" : "NONE"
-      }
-    },
-    "ioConfig" : {
-      "type" : "realtime",
-      "firehose": {
-        "type": "kafka-0.8",
-        "consumerProps": {
-          "zookeeper.connect": "<%=@zookeeper%>",
-          "zookeeper.connection.timeout.ms" : "15000",
-          "zookeeper.session.timeout.ms" : "15000",
-          "zookeeper.sync.time.ms" : "5000",
-          "group.id": "topic-test-<%=@environment%>",
-          "fetch.message.max.bytes" : "1048586",
-          "auto.offset.reset": "largest",
-          "auto.commit.enable": "false"
-        },
-        "feed": "topic-test-<%=@environment%>"
-      },
-      "plumber": {
-        "type": "realtime"
-      }
-    },
-    "tuningConfig": {
-      "shardSpec": {
-        		"type": "linear",
-        		"partitionNum": <%=@partitionNum%>
+        		"partitionNum": <%=partitionNum%>
       },
       "type" : "realtime",
       "maxRowsInMemory": 500000,
@@ -251,4 +64,9 @@
       }
     }
   }
+  <% if index != @realtime_list.size-1 =%>
+    ,
+  <% end %>
+  
+ <% end %>
 ]
