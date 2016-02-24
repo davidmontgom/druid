@@ -86,7 +86,7 @@ if server_type=='druidrealtime'
       owner "root"
       group "root"
       mode "0644"
-      variables {{
+      variables lazy {{
         :zookeeper => File.read("#{Chef::Config[:file_cache_path]}/zookeeper_hosts"), :version => version, :environment => node.chef_environment,
         :AWS_ACCESS_KEY_ID => AWS_ACCESS_KEY_ID, :AWS_SECRET_ACCESS_KEY => AWS_SECRET_ACCESS_KEY,
         :realtime_list => realtime_list,

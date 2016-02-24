@@ -34,7 +34,7 @@
       "firehose": {
         "type": "kafka-0.8",
         "consumerProps": {
-          "zookeeper.connect": "<%=zookeeper%>",
+          "zookeeper.connect": "<%=@zookeeper%>",
           "zookeeper.connection.timeout.ms" : "15000",
           "zookeeper.session.timeout.ms" : "15000",
           "zookeeper.sync.time.ms" : "5000",
@@ -52,7 +52,7 @@
     "tuningConfig": {
       "shardSpec": {
         		"type": "linear",
-        		"partitionNum": <%=partitionNum%>
+        		"partitionNum": <%=@partitionNum%>
       },
       "type" : "realtime",
       "maxRowsInMemory": 500000,
